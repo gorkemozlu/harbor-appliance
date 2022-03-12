@@ -127,6 +127,10 @@ build {
       "${path.cwd}/scripts/system/photon-settings.sh"
     ]
   }
+  provisioner "file" {
+    destination = "/data/cert/"
+    source      = "files/cert/"
+  }
   provisioner "shell" {
     expect_disconnect = true
     scripts           = ["${path.cwd}/scripts/system/photon-docker.sh"]

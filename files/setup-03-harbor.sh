@@ -1,5 +1,20 @@
 #!/bin/bash
 
+
+if [[ -s /data/cert/ca.crt ]]
+then
+
+    echo "copying existing certs..."
+    mkdir -p /etc/docker/certs.d/${HOSTNAME}/
+    cp /data/cert/ca.crt /etc/docker/certs.d/${HOSTNAME}/${HOSTNAME}.cert
+    cp /data/cert/key.key /etc/docker/certs.d/${HOSTNAME}/${HOSTNAME}.key
+    mv /data/cert/ca.crt /data/cert/${HOSTNAME}.crt
+    mv /data/cert/key.key /data/cert/${HOSTNAME}.key
+
+else
+
+rm /data/cert/ca.crt
+rm /data/cert/key.key
 # Generate a CA certificate private key
 openssl genrsa -out ca.key 4096
 
@@ -37,7 +52,6 @@ openssl x509 -req -sha512 -days 3650 \
     -CA ca.crt -CAkey ca.key -CAcreateserial \
     -in ${HOSTNAME}.csr \
     -out ${HOSTNAME}.crt
-
 # Configure certificate for Docker
 mkdir -p /data/cert/
 cp ${HOSTNAME}.crt /data/cert/
@@ -49,6 +63,10 @@ mkdir -p /etc/docker/certs.d/${HOSTNAME}/
 cp ${HOSTNAME}.cert /etc/docker/certs.d/${HOSTNAME}/
 cp ${HOSTNAME}.key /etc/docker/certs.d/${HOSTNAME}/
 cp ca.crt /etc/docker/certs.d/${HOSTNAME}/
+
+fi
+
+
 
 # Creating Harbor configuration
 HARBOR_CONFIG=harbor.yml

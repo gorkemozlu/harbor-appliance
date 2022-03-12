@@ -23,6 +23,7 @@ tdnf install -y \
 
 echo '> Creating directory for setup scripts'
 mkdir -p /setup/harbor
+mkdir -p /data/cert/
 
 echo ' > Downloading Harbor...'
 HARBOR_VERSION=2.4.1
