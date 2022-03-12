@@ -1,7 +1,7 @@
 # MacOS
 ## Ignore desktop services files.
 **/.DS_Store
-
+output-vagrant-vbx/
 # Packer
 ## Ignore cache directories.
 packer_cache/

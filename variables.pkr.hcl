@@ -35,6 +35,14 @@ variable "vm_name" {
   type    = string
   default = "photon"
 }
+variable "version" {
+  type    = string
+  default = "13"
+}
+variable "photon_ovf_template" {
+  type    = string
+  default = "photon.xml.template"
+}
 
 variable "iso_url" {
   type = string
@@ -80,7 +88,7 @@ variable "boot_command" {
   type = list(string)
   default = [
     "<esc><wait>",
-    "vmlinuz initrd=initrd.img root=/dev/ram0 loglevel=3 ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.json insecure_installation=1 photon.media=cdrom",
+    "vmlinuz initrd=initrd.img root=/dev/ram0 loglevel=3 ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/photon-kickstart.json insecure_installation=1 photon.media=cdrom",
     "<enter>"
   ]
 }
@@ -97,7 +105,7 @@ variable "ssh_username" {
 
 variable "ssh_password" {
   type      = string
-  default   = "VMw@re123!"
+  default   = "VMware1!"
   sensitive = true
 }
 
@@ -108,7 +116,7 @@ variable "vagrant_username" {
 
 variable "vagrant_password" {
   type      = string
-  default   = "VMw@re123!"
+  default   = "VMware1!"
   sensitive = true
 }
 
@@ -152,7 +160,7 @@ variable "cpu_count" {
 
 variable "memory_size" {
   type    = number
-  default = 1024
+  default = 2048
 }
 
 variable "disk_adapter_vmw" {

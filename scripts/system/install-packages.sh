@@ -8,3 +8,4 @@
 
 /bin/echo '> Installing additional packages...'
 /usr/bin/tdnf install --assumeyes --quiet --refresh sudo
+mkdir -p /setup/harbor

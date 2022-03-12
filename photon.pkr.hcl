@@ -68,12 +68,13 @@ source "virtualbox-iso" "vagrant-vbx" {
   cpus                   = var.cpu_count
   memory                 = var.memory_size
   disk_size              = var.disk_size
+  format                 = "ovf"
   hard_drive_interface   = var.disk_adapter_vbx
   gfx_controller         = var.gfx_controller_vbx
   gfx_vram_size          = var.gfx_memory_vbx
   headless               = var.headless
   http_content = {
-    "/ks.json" = templatefile("${abspath(path.root)}/photon.pkrtpl.hcl", {
+    "/photon-kickstart.json" = templatefile("${abspath(path.root)}/photon.pkrtpl.hcl", {
       os_packagelist = var.os_packagelist
       ssh_username   = var.ssh_username
       ssh_password   = var.ssh_password
@@ -115,36 +116,59 @@ build {
   }
 
   provisioner "shell" {
-    only   = ["vmware-iso.vagrant-vmw"]
     script = "${path.cwd}/scripts/vmware/install-vmw-guest-additions.sh"
+  }
+  provisioner "file" {
+    destination = "/setup/harbor-offline-installer-v2.4.1.tgz"
+    source      = "files/harbor-offline-installer-v2.4.1.tgz"
+  }
+  provisioner "shell" {
+    scripts = [
+      "${path.cwd}/scripts/system/photon-settings.sh"
+    ]
+  }
+  provisioner "shell" {
+    expect_disconnect = true
+    scripts           = ["${path.cwd}/scripts/system/photon-docker.sh"]
+  }
+
+  provisioner "file" {
+    destination = "/etc/rc.d/rc.local"
+    source      = "files/rc.local"
+  }
+  provisioner "file" {
+    destination = "/setup/getOvfProperty.py"
+    source      = "files/getOvfProperty.py"
+  }
+  provisioner "file" {
+    destination = "/setup/setup.sh"
+    source      = "files/setup.sh"
+  }
+  provisioner "file" {
+    destination = "/setup/setup-01-os.sh"
+    source      = "files/setup-01-os.sh"
+  }
+  provisioner "file" {
+    destination = "/setup/setup-02-network.sh"
+    source      = "files/setup-02-network.sh"
+  }
+  provisioner "file" {
+    destination = "/setup/setup-03-harbor.sh"
+    source      = "files/setup-03-harbor.sh"
   }
 
   provisioner "shell" {
-    only   = ["virtualbox-iso.vagrant-vbx"]
-    script = "${path.cwd}/scripts/virtualbox/install-vbx-guest-additions.sh"
+    pause_before = "20s"
+    scripts      = ["${path.cwd}/scripts/system/photon-cleanup.sh"]
   }
 
   provisioner "shell" {
     scripts = [
-      "${path.cwd}/scripts/system/lockdown-security.sh",
       "${path.cwd}/scripts/system/complete-build.sh"
     ]
   }
-
-  post-processors {
-
-    post-processor "manifest" {
-      output     = "${path.cwd}/output/manifest.json"
-      strip_path = false
-    }
-
-    post-processor "vagrant" {
-      only                 = ["vmware-iso.vagrant-vmw", "virtualbox-iso.vagrant-vbx"]
-      keep_input_artifact  = false
-      compression_level    = 9
-      output               = "${path.cwd}/output/${lower(var.os_distro)}-${var.os_version}-${upper(var.os_release)}-${var.os_packagelist}-{{ .BuildName }}.box"
-      vagrantfile_template = "${path.cwd}/scripts/vagrant/vagrantfile.tpl"
-    }
-
+  post-processor "shell-local" {
+    environment_vars = ["PHOTON_VERSION=${var.version}", "PHOTON_APPLIANCE_NAME=${var.vm_name}", "FINAL_PHOTON_APPLIANCE_NAME=${var.vm_name}_${var.version}", "PHOTON_OVF_TEMPLATE=${var.photon_ovf_template}"]
+    inline           = ["cd manual", "./add_ovf_properties.sh"]
   }
 }
