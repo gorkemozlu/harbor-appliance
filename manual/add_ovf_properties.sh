@@ -10,10 +10,10 @@ if [ "${OUTPUT_PATH}" = "${OVF_PATH}" ]; then
     mv ${OUTPUT_PATH}/*.* ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}
     OVF_PATH=${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}
 fi
-OVF_DISK_SIZE=$(cat ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}.ovf|grep "ovf:capacity="|cut -d "=" -f2|cut -d " " -f1)
+OVF_DISK_SIZE=$(cat ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}/${PHOTON_APPLIANCE_NAME}.ovf|grep "ovf:capacity="|cut -d "=" -f2|cut -d " " -f1)
 rm -f ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.mf
 
-sed "s/{{VERSION}}/${PHOTON_VERSION}/g" ${PHOTON_OVF_TEMPLATE} > photon.xml
+sed "s/{{VERSION}}/${PHOTON_VERSION}/g" ${PHOTON_OVF_TEMPLATE} > ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}/photon.xml
 cp ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf.old
 cp photon.ovf.template ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf
 
