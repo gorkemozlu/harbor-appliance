@@ -156,7 +156,7 @@ build {
   }
 
   provisioner "shell" {
-    pause_before = "20s"
+    pause_before = "5s"
     scripts      = ["${path.cwd}/scripts/system/photon-cleanup.sh"]
   }
 
