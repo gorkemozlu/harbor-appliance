@@ -37,13 +37,7 @@ source "vmware-iso" "vagrant-vmw" {
   disk_size            = var.disk_size
   disk_type_id         = var.disk_type_vmw
   headless             = var.headless
-  http_content = {
-    "/ks.json" = templatefile("${abspath(path.root)}/photon.pkrtpl.hcl", {
-      os_packagelist = var.os_packagelist
-      ssh_username   = var.ssh_username
-      ssh_password   = var.ssh_password
-    })
-  }
+  http_directory      = "http"
   iso_url           = var.iso_url
   iso_checksum      = "${var.iso_checksum_type}:${var.iso_checksum_value}"
   boot_wait         = var.boot_wait
