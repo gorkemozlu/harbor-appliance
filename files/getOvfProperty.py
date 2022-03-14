@@ -32,10 +32,6 @@ def get_ovf_properties():
 
 
 def main(argv):
-    if len(argv) is not 1:
-        debug('usage: getOvfProperty.py <property_name')
-        sys.exit(1)
-           
     ovf = get_ovf_properties()
     
     try:

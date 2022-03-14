@@ -13,17 +13,12 @@ fi
 OVF_DISK_SIZE=$(cat ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}/${PHOTON_APPLIANCE_NAME}.ovf|grep "ovf:capacity="|cut -d "=" -f2|cut -d " " -f1)
 rm -f ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.mf
 
-sed "s/{{VERSION}}/${PHOTON_VERSION}/g" ${PHOTON_OVF_TEMPLATE} > ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}/photon.xml
-cp ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf.old
-cp photon.ovf.template ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf
+#sed "s/{{VERSION}}/${PHOTON_VERSION}/g" ${PHOTON_OVF_TEMPLATE} > ${OUTPUT_PATH}/${PHOTON_APPLIANCE_NAME}/photon.xml
+mv ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.virtualbox.ovf.old
+cp photon.ovf.template ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}-vsphere.ovf
 
-if [ "$(uname)" == "Darwin" ]; then
-    sed -i -e "s~"ovf:capacity"~"ovf:capacity=$OVF_DISK_SIZE" ~g" ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf
-    #sed -i .bak2 "/    <\/vmw:BootOrderSection>/ r photon.xml" ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf
-else
-    sed -i -e "s~"ovf:capacity"~"ovf:capacity=$OVF_DISK_SIZE" ~g" ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf
-    sed -i "/    <\/vmw:BootOrderSection>/ r photon.xml" ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf
-fi
+sed -i -e "s~"ovf:capacity"~"ovf:capacity=$OVF_DISK_SIZE" ~g" ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}-vsphere.ovf
+
 #export OVFPATH="/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/"
 #$OVFPATH/ovftool ${OVF_PATH}/${PHOTON_APPLIANCE_NAME}.ovf ${OUTPUT_PATH}/${FINAL_PHOTON_APPLIANCE_NAME}.ova
 #rm -rf ${OVF_PATH}

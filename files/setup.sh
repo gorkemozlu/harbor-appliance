@@ -8,7 +8,7 @@
 DEBUG=$(/setup/getOvfProperty.py "guestinfo.debug")
 HOSTNAME=$(/setup/getOvfProperty.py "guestinfo.hostname")
 IP_ADDRESS=$(/setup/getOvfProperty.py "guestinfo.ipaddress")
-NETMASK=$(/setup/getOvfProperty.py "guestinfo.netmask" | awk -F ' ' '{print $1}')
+NETMASK=$(/setup/getOvfProperty.py "guestinfo.netmask")
 GATEWAY=$(/setup/getOvfProperty.py "guestinfo.gateway")
 DNS_SERVER=$(/setup/getOvfProperty.py "guestinfo.dns")
 DNS_DOMAIN=$(/setup/getOvfProperty.py "guestinfo.domain")
@@ -44,6 +44,8 @@ else
         echo "### WARNING -- DEBUG LOG CONTAINS ALL EXECUTED COMMANDS WHICH INCLUDES CREDENTIALS -- WARNING ###"
         echo "### WARNING --             PLEASE REMOVE CREDENTIALS BEFORE SHARING LOG            -- WARNING ###"
         echo
+		echo $(/usr/bin/vmtoolsd --cmd 'info-get guestinfo.ovfEnv')
+
 	fi
 
 	echo -e "\e[92mStarting Customization ..." > /dev/console
