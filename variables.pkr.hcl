@@ -187,7 +187,7 @@ variable "disk_type_vmw" {
 
 variable "disk_size" {
   type    = number
-  default = 20480
+  default = 100480
 }
 
 variable "gfx_controller_vbx" {
