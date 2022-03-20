@@ -1,6 +1,6 @@
 // VMware Photon OS Settings
 os_version         = "4.0"
-os_release         = "GA"
+os_release         = "Rev2"
 iso_checksum_type  = "sha1"
 iso_checksum_value = "eeb08738209bf77306268d63b834fd91f6cecdfb"
 iso_url            = "/tmp/photon-4.0-c001795b8.iso"
