@@ -16,6 +16,8 @@ NTP_SERVER=$(/setup/getOvfProperty.py "guestinfo.ntp")
 ROOT_PASSWORD=$(/setup/getOvfProperty.py "guestinfo.root_password")
 HARBOR_PASSWORD=$(/setup/getOvfProperty.py "guestinfo.harbor_password")
 DOCKER_NETWORK_CIDR=$(/setup/getOvfProperty.py "guestinfo.docker_network_cidr")
+ENCODED_CUSTOM_CA_PEM=$(/setup/getOvfProperty.py "guestinfo.custom_pem")
+ENCODED_CUSTOM_CA_PEM_KEY=$(/setup/getOvfProperty.py "guestinfo.custom_pem_key")
 
 if [[ $? -gt 0 ]]
 then

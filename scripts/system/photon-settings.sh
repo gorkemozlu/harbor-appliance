@@ -19,7 +19,8 @@ tdnf install -y \
   logrotate \
   wget \
   unzip \
-  tar
+  tar \
+  parted
 
 echo '> Creating directory for setup scripts'
 mkdir -p /setup/harbor

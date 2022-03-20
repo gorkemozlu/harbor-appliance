@@ -28,7 +28,7 @@
       <System>
         <vssd:ElementName>Virtual Hardware Family</vssd:ElementName>
         <vssd:InstanceID>0</vssd:InstanceID>
-        <vssd:VirtualSystemType>vmx-19</vssd:VirtualSystemType>
+        <vssd:VirtualSystemType>vmx-13</vssd:VirtualSystemType>
       </System>
       <Item>
         <rasd:AllocationUnits>hertz * 10^6</rasd:AllocationUnits>
@@ -89,11 +89,11 @@
     </VirtualHardwareSection>
     <ProductSection ovf:required="true">
       <Info>Information about the installed software</Info>
-      <Product>VMware Harbor Appliance</Product>
-      <Vendor>WilliamLam.com</Vendor>
+      <Product>Unofficial VMware Harbor Appliance</Product>
+      <Vendor>gorkemozlu.com</Vendor>
       <Version>146</Version>
-      <ProductUrl>https://github.com/lamw/harbor-appliance</ProductUrl>
-      <VendorUrl>https://williamlam.com/</VendorUrl>
+      <ProductUrl>https://github.com/gorkemozlu/harbor-appliance</ProductUrl>
+      <VendorUrl>https://gorkemozlu.com/</VendorUrl>
       <Category>Networking</Category>
         <Property ovf:key="guestinfo.hostname" ovf:type="string" ovf:userConfigurable="true" ovf:value="harbor.mgt.tanzu.vmw.local">
             <Label>Hostname</Label>
@@ -131,6 +131,15 @@
         <Property ovf:key="guestinfo.harbor_password" ovf:password="true" ovf:type="string" ovf:userConfigurable="true" ovf:value="VMware12!">
             <Label>Harbor Password</Label>
             <Description>Password for Harbor. Please use a secure password</Description>
+        </Property>
+        <Category>Certificate</Category>
+        <Property ovf:key="guestinfo.custom_pem" ovf:password="true" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Certificate for Harbor</Label>
+            <Description>Base64 value of pem/crt certificate file.</Description>
+        </Property>
+        <Property ovf:key="guestinfo.custom_pem_key" ovf:password="true" ovf:type="string" ovf:userConfigurable="true" ovf:value="">
+            <Label>Certificate Key for Harbor</Label>
+            <Description>Base64 value of certificate key file.</Description>
         </Property>
         <Category>zDebug</Category>
         <Property ovf:key="guestinfo.debug" ovf:type="boolean" ovf:userConfigurable="true" ovf:value="true">

@@ -1,6 +1,19 @@
 #!/bin/bash
 
 
+if [[ ("${ENCODED_CUSTOM_CA_PEM}" != "") && ("${ENCODED_CUSTOM_CA_PEM_KEY}" != "")]]; then
+    echo -e "\e[92mConfiguring Custom Harbor Certificate ..." > /dev/console
+    DECODED_CUSTOM_CA_PEM=$(echo ${ENCODED_CUSTOM_CA_PEM}|base64 -d)
+    DECODED_CUSTOM_CA_PEM_KEY=$(echo ${ENCODED_CUSTOM_CA_PEM_KEY}|base64 -d)
+cat > /data/cert/ca.crt <<EOLPEM
+${DECODED_CUSTOM_CA_PEM}
+EOLPEM
+cat > /data/cert/key.key <<EOLKEY
+${DECODED_CUSTOM_CA_PEM_KEY}
+EOLKEY
+
+fi
+
 if [[ -s /data/cert/ca.crt ]]
 then
 
@@ -67,7 +80,7 @@ cp ca.crt /etc/docker/certs.d/${HOSTNAME}/
 fi
 
 
-
+echo -e "\e[92mContinue Harbor Configuration ..." > /dev/console
 # Creating Harbor configuration
 HARBOR_CONFIG=harbor.yml
 cd /setup/harbor
